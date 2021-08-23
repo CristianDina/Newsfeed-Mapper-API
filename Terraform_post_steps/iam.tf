@@ -14,8 +14,8 @@ resource "aws_iam_role" "newsfeed-mapper-api-role" {
     ]
   })
 }
-resource "aws_iam_role_policy" "student_policy" {
-  name = "student_policy"
+resource "aws_iam_role_policy" "newsfeed_policy" {
+  name = "newsfeed_policy"
   role = aws_iam_role.newsfeed-mapper-api-role.id
 
   # Terraform's "jsonencode" function converts a
