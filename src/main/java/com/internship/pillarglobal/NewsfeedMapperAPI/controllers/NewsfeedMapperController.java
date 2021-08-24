@@ -11,8 +11,8 @@ public class NewsfeedMapperController {
     @Autowired
     public NewsFeedMapperService newsFeedMapperService;
     @PostMapping("/triggerYahooUK")
-    public void triggerYahooUK() throws IOException, InterruptedException {
-        newsFeedMapperService.processYahooUK();
+    public String triggerYahooUK() throws IOException, InterruptedException {
+       return newsFeedMapperService.processYahooUK();
     }
 
 
