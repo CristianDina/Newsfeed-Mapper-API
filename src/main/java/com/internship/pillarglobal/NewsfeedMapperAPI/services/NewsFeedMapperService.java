@@ -1,4 +1,6 @@
 package com.internship.pillarglobal.NewsfeedMapperAPI.services;
+import com.internship.pillarglobal.NewsfeedMapperAPI.repositories.NewsfeedMapperRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,6 +8,11 @@ import java.net.*;
 
 @Service
 public class NewsFeedMapperService {
+    private NewsfeedMapperRepository newsfeedMapperRepository;
+    @Autowired
+    public NewsFeedMapperService(NewsfeedMapperRepository newsfeedMapperRepository){
+        this.newsfeedMapperRepository=newsfeedMapperRepository;
+    }
     public void processYahooUK() throws IOException, InterruptedException {
 //        HttpRequest request = HttpRequest.newBuilder()
 //                .uri(URI.create("https://yahoo-uk-feed.platforms-prod-gcp.telegraph.co.uk/feed.xml"))
