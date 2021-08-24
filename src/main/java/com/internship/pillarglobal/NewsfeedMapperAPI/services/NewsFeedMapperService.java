@@ -1,21 +1,8 @@
 package com.internship.pillarglobal.NewsfeedMapperAPI.services;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializers;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.DefaultHttpClientConnectionOperator;
 import org.springframework.stereotype.Service;
-
-import java.io.Console;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.*;
-
-import java.nio.file.Paths;
-import java.time.Duration;
 
 @Service
 public class NewsFeedMapperService {
