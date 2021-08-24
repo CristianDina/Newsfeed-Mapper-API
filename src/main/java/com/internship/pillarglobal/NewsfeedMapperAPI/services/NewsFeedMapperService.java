@@ -20,18 +20,28 @@ public class NewsFeedMapperService {
     }
 
     public String processYahooUK() throws IOException, InterruptedException {
+//        HttpRequest request = HttpRequest.newBuilder()
+//                .uri(URI.create("https://yahoo-uk-feed.platforms-prod-gcp.telegraph.co.uk/feed.xml"))
+//                .build();
+//        HttpClient client = HttpClient.newBuilder()
+//                .version(HttpClient.Version.HTTP_1_1)
+//                .followRedirects(HttpClient.Redirect.NORMAL)
+//                .connectTimeout(Duration.ofSeconds(20))
+//                //.proxy(ProxySelector.of(new InetSocketAddress("https://yahoo-uk-feed.platforms-prod-gcp.telegraph.co.uk/feed.xml", 80)))
+//                .authenticator(Authenticator.getDefault())
+//                .build();
+//        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+//        System.out.println(response.statusCode());
+//        System.out.println(response.body());
+//        return response.body();
+        HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://yahoo-uk-feed.platforms-prod-gcp.telegraph.co.uk/feed.xml"))
                 .build();
-        HttpClient client = HttpClient.newBuilder()
-                .version(HttpClient.Version.HTTP_1_1)
-                .followRedirects(HttpClient.Redirect.NORMAL)
-                .connectTimeout(Duration.ofSeconds(20))
-                //.proxy(ProxySelector.of(new InetSocketAddress("https://yahoo-uk-feed.platforms-prod-gcp.telegraph.co.uk/feed.xml", 80)))
-                .authenticator(Authenticator.getDefault())
-                .build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.statusCode());
+
+        HttpResponse<String> response =
+                client.send(request, HttpResponse.BodyHandlers.ofString());
+
         System.out.println(response.body());
         return response.body();
 
