@@ -4,6 +4,10 @@ import com.internship.pillarglobal.NewsfeedMapperAPI.services.NewsFeedMapperServ
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
 @RestController
