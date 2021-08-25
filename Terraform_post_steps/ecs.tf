@@ -5,7 +5,7 @@ resource "aws_ecs_task_definition" "newsfeed-mapper-api-task" {
       name      = "newsfeed"
       image     = aws_ecr_repository.newsfeed-mapper-api-repository.repository_url
       memory    = 512
-
+      essential = true
       portMappings = [
         {
           containerPort = 8080
