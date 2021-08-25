@@ -12,6 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Table(name="yahoo_uk_items",schema = "newsfeed_api_db_schema")
 @Data
+
 public class YahooUKItem {
     private String title;
     private String link;
@@ -20,7 +21,7 @@ public class YahooUKItem {
     @Id
     private String guid;
     private String dc_creator;
-    private String content;
+    private String content_encoded;
     private String description;
     private String category;
 
