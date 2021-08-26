@@ -1,14 +1,16 @@
 package com.internship.pillarglobal.NewsfeedMapperAPI.utils;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.internship.pillarglobal.NewsfeedMapperAPI.models.YahooUKItem;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class ItemMapper {
     public static List<YahooUKItem> getItemsList(String data) throws IOException {
-        System.out.println(data.indexOf("<item>"));
-        System.out.println(data.indexOf("</channel></rss>"));
+        log.info(String.valueOf(data.indexOf("<item>")));
         int beginIndex = data.indexOf("<item>");
         int endIndex = data.indexOf("</channel></rss>");
         data = data.substring(beginIndex, endIndex);
