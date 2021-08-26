@@ -3,7 +3,7 @@ resource "aws_instance" "newsfeed-mapper-api-ec2instance" {
   instance_type = "t2.micro"
   iam_instance_profile = aws_iam_instance_profile.newsfeed-mapper-api-iam_instance.name
   vpc_security_group_ids = ["sg-0e3449ac9bda66de9"]
-  key_name = "jen.pem"
+  key_name = "jen"
 }
 
 resource "aws_iam_instance_profile" "newsfeed-mapper-api-iam_instance" {
