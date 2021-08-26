@@ -1,15 +1,7 @@
 package com.internship.pillarglobal.NewsfeedMapperAPI.utils;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.internship.pillarglobal.NewsfeedMapperAPI.clients.YahooUKClient;
 import com.internship.pillarglobal.NewsfeedMapperAPI.models.YahooUKItem;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
