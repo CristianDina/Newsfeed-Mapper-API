@@ -15,9 +15,6 @@ import java.util.List;
 
 @Component
 public class YahooUKClient {
-    @Autowired
-    NewsFeedMapperService newsFeedMapperService;
-
     public List<YahooUKItem> getRssFeed() throws IOException {
         URL yahoo = new URL("https://yahoo-uk-feed.platforms-prod-gcp.telegraph.co.uk/feed.xml");
         URLConnection yc = yahoo.openConnection();
