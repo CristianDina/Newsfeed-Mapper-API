@@ -19,9 +19,7 @@ public class NewsfeedMapperController {
     public NewsFeedMapperService newsFeedMapperService;
     @PostMapping("/triggerYahooUK")
     public ResponseEntity<?> triggerYahooUK() throws IOException, InterruptedException {
-        if(!newsFeedMapperService.processYahooUK().isEmpty())
-            return new ResponseEntity<String>("Trigger to yahoo-uk was done successfully.", HttpStatus.OK);
-        else
-            return new ResponseEntity<String>("Trigger to yahoo-uk was done unsuccessfully.", HttpStatus.NOT_FOUND);
+        newsFeedMapperService.processYahooUK();
+        return new ResponseEntity<String>("Trigger to yahoo-uk was done successfully.", HttpStatus.OK);
     }
 }
