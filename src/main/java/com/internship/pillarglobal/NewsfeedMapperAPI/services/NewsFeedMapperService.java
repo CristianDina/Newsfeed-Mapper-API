@@ -22,7 +22,8 @@ public class NewsFeedMapperService {
 
     public List<YahooUKItem> processYahooUK() throws IOException, InterruptedException {
         List<YahooUKItem> yahooUKItemList=yahooUKClient.getRssFeed();
-        newsfeedMapperRepository.saveAll(yahooUKItemList);
+        for(YahooUKItem item:yahooUKItemList)
+            newsfeedMapperRepository.save(item);
         return yahooUKItemList;
     }
 
