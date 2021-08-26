@@ -27,7 +27,5 @@ public class YahooUKClient {
             data=data.concat(inputLine);
         in.close();
         return ItemMapper.getItemsList(data);
-
     }
-
 }

@@ -21,6 +21,7 @@ public class NewsFeedMapperService {
     }
 
     public List<YahooUKItem> processYahooUK() throws IOException, InterruptedException {
-        return yahooUKClient.getRssFeed();
+        List<YahooUKItem> yahooUKItemList=yahooUKClient.getRssFeed();
+        return yahooUKItemList;
     }
 }
