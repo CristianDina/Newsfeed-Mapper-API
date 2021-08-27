@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -19,7 +21,10 @@ public class NewsfeedMapperController {
     public NewsFeedMapperService newsFeedMapperService;
     @PostMapping("/triggerYahooUK")
     public ResponseEntity<?> triggerYahooUK() throws IOException, InterruptedException {
-        newsFeedMapperService.processYahooUK();
-        return new ResponseEntity<String>("Trigger to yahoo-uk was done successfully.", HttpStatus.OK);
+
+        if(newsFeedMapperService.processYahooUK()!= Collections.EMPTY_LIST)
+            return new ResponseEntity<String>("Trigger to yahoo-uk was done successfully.", HttpStatus.OK);
+        else
+            return new ResponseEntity<String>("Trigger to yahoo-uk was done unsuccessfully.", HttpStatus.NOT_FOUND);
     }
 }

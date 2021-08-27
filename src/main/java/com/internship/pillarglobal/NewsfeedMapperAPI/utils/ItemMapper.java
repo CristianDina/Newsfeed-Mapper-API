@@ -10,7 +10,7 @@ import java.util.List;
 @Slf4j
 public class ItemMapper {
     public static List<YahooUKItem> getItemsList(String data) throws IOException {
-        log.info(String.valueOf(data.indexOf("<item>")));
+        //log.info(String.valueOf(data.indexOf("<item>")));
         int beginIndex = data.indexOf("<item>");
         int endIndex = data.indexOf("</channel></rss>");
         data = data.substring(beginIndex, endIndex);
@@ -35,7 +35,7 @@ public class ItemMapper {
                 itemAsXml = data.substring(firstIndex, lastIndex+7);
             }
             else lastIndex=data.length()+100;
-            log.info(String.valueOf(value));
+            //log.info(String.valueOf(value));
         }
 
         return itemsList;
