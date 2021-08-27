@@ -14,25 +14,19 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="yahoo_uk_items",schema = "newsfeed_api_db_schema")
-
+@Data
 
 public class YahooUKItem {
-    @Column(name = "title")
     private String title;
-    @Column(name = "link")
     private String link;
-    @Column(name = "pubDate")
     private Date pubDate;
-    @Column(name = "premium")
     private boolean premium;
     @Id
-    @Column(name = "guid")
-
     private String guid;
-    @Column(name = "dc_creator")
     private String dc_creator;
-    @Column(length = 300000)
+    @Column(length = 100000)
     private String content_encoded;
+    @Column(length = 5000)
     private String description;
     private String category;
 

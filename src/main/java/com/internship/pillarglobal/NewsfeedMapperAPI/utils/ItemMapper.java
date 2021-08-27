@@ -35,6 +35,7 @@ public class ItemMapper {
                 itemAsXml = data.substring(firstIndex, lastIndex+7);
             }
             else lastIndex=data.length()+100;
+            log.info(String.valueOf(value));
         }
 
         return itemsList;
