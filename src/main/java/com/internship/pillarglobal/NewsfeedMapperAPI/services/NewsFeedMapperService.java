@@ -27,14 +27,18 @@ public class NewsFeedMapperService {
     }
 
     @Scheduled(fixedDelay = 300000)
-    public List<YahooUKItem> processYahooUK() throws IOException, InterruptedException {
-        log.info("New process of YahooUK");
+    public List<YahooUKItem> processYahooUK() throws IOException {
+        log.info("YahooUK article mapping has started");
         List<YahooUKItem> yahooUKItemList=yahooUKClient.getRssFeed();
+        YahooUKItem currentItem =yahooUKItemList.get(0);
         try {
-            newsfeedMapperRepository.saveAll(yahooUKItemList);
+            for(YahooUKItem item:yahooUKItemList){
+                currentItem = item;
+                newsfeedMapperRepository.save(item);
+            }
         }catch(Exception exception){
-           log.error("Failed to store yahoo-uk articles in database");
-           throw new FailedToStoreInDatabase("Failed to store yahoo-uk articles in database");
+           log.error("Failed to store yahoo-uk article in database, article: "+currentItem.toString());
+           throw new FailedToStoreInDatabase("Failed to store yahoo-uk article in database");
         }
         return yahooUKItemList;
     }
