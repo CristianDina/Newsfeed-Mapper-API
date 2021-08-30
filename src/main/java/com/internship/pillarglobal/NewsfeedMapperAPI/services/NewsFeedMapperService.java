@@ -5,6 +5,8 @@ import com.internship.pillarglobal.NewsfeedMapperAPI.models.YahooUKItem;
 import com.internship.pillarglobal.NewsfeedMapperAPI.repositories.NewsfeedMapperRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -13,6 +15,7 @@ import java.util.List;
 
 @Service
 @Slf4j
+@EnableScheduling
 public class NewsFeedMapperService {
     private YahooUKClient yahooUKClient;
     private NewsfeedMapperRepository newsfeedMapperRepository;
@@ -23,7 +26,9 @@ public class NewsFeedMapperService {
         this.yahooUKClient=yahooUKClient;
     }
 
+    @Scheduled(fixedDelay = 300000)
     public List<YahooUKItem> processYahooUK() throws IOException, InterruptedException {
+        log.info("New process of YahooUK");
         List<YahooUKItem> yahooUKItemList=yahooUKClient.getRssFeed();
         try {
             newsfeedMapperRepository.saveAll(yahooUKItemList);
