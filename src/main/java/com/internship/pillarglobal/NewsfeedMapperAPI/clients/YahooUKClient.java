@@ -24,9 +24,9 @@ import java.util.List;
 @Slf4j
 public class YahooUKClient {
     public List<YahooUKItem> getRssFeed() throws IOException {
+        URL yahoo=null;
         try {
-            URL yahoo = new URL("https://yahoo-uk-feed.platforms-prod-gcp.telegraph.co.uk/feed.xml");
-            log.info(String.valueOf(yahoo.toURI()));
+            yahoo = new URL("https://yahoo-uk-feed.platforms-prod-gcp.telegraph.co.uk/feed.xml");
             URLConnection yc = yahoo.openConnection();
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(
@@ -38,17 +38,12 @@ public class YahooUKClient {
             in.close();
             return ItemMapper.getItemsList(data);
         }catch (MalformedURLException malformedURLException){
-            log.error("An malformed URL has occurred at yahoo-uk client");
-            throw new MalformedUrlWhenXmlisRead("An malformed URL has occurred at yahoo-uk client");
+            log.error("An malformed URL has occurred at yahoo-uk client: "+yahoo.getPath());
+            throw new MalformedUrlWhenXmlisRead("An malformed URL has occurred at yahoo-uk client: "+yahoo.getPath());
             }
         catch (IOException ioException){
-            log.error("Failed to read data from yahoo-uk xml");
-            throw new FailedToReadDataFromXml("Failed to read data from yahoo-uk xml");
+            log.error("Failed to read data from yahoo-uk xml.");
+            throw new FailedToReadDataFromXml("Failed to read data from yahoo-uk xml.");
         }
-        catch (Exception e) {
-            log.error("Failed to read data from yahoo-uk xml");
-            throw new FailedToReadDataFromXml("Failed to read data from yahoo-uk xml");
-        }
-
     }
 }
