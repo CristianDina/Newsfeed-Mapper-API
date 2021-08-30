@@ -1,6 +1,7 @@
 package com.internship.pillarglobal.NewsfeedMapperAPI.utils;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.internship.pillarglobal.NewsfeedMapperAPI.models.YahooUKItem;
+import com.internship.pillarglobal.NewsfeedMapperAPI.models.YahooUSItem;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -35,7 +36,36 @@ public class ItemMapper {
                 itemAsXml = data.substring(firstIndex, lastIndex+7);
             }
             else lastIndex=data.length()+100;
-            //log.info(String.valueOf(value));
+        }
+
+        return itemsList;
+    }
+    public static List<YahooUSItem> getItemsListYS(String data) throws IOException {
+        //log.info(String.valueOf(data.indexOf("<item>")));
+        int beginIndex = data.indexOf("<item>");
+        int endIndex = data.indexOf("</channel></rss>");
+        data = data.substring(beginIndex, endIndex);
+        data = data.replaceAll("<dc:creator>", "<dc_creator>");
+        data = data.replaceAll("</dc:creator>", "</dc_creator>");
+        data = data.replaceAll("<content:encoded>", "<content_encoded>");
+        data = data.replaceAll("</content:encoded>", "</content_encoded>");
+
+        int firstIndex = 0;
+        int lastIndex = data.indexOf("</item>");
+        String itemAsXml = data.substring(firstIndex, lastIndex+7);
+        List<YahooUSItem> itemsList = new ArrayList<YahooUSItem>();
+        while (lastIndex <= data.length() - 6) {
+            XmlMapper xmlMapper = new XmlMapper();
+            YahooUSItem value
+                    = xmlMapper.readValue(itemAsXml, YahooUSItem.class);
+            itemsList.add(value);
+            firstIndex = lastIndex + 8;
+            if(firstIndex<data.length()-1) {
+                lastIndex = data.indexOf("</item>", firstIndex);
+                itemAsXml = "";
+                itemAsXml = data.substring(firstIndex, lastIndex+7);
+            }
+            else lastIndex=data.length()+100;
         }
 
         return itemsList;

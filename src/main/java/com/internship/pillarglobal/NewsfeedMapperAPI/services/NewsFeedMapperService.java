@@ -1,8 +1,11 @@
 package com.internship.pillarglobal.NewsfeedMapperAPI.services;
 import com.internship.pillarglobal.NewsfeedMapperAPI.clients.YahooUKClient;
+import com.internship.pillarglobal.NewsfeedMapperAPI.clients.YahooUSClient;
 import com.internship.pillarglobal.NewsfeedMapperAPI.exceptions.FailedToStoreInDatabase;
 import com.internship.pillarglobal.NewsfeedMapperAPI.models.YahooUKItem;
-import com.internship.pillarglobal.NewsfeedMapperAPI.repositories.NewsfeedMapperRepository;
+import com.internship.pillarglobal.NewsfeedMapperAPI.models.YahooUSItem;
+import com.internship.pillarglobal.NewsfeedMapperAPI.repositories.YahooUKRepository;
+import com.internship.pillarglobal.NewsfeedMapperAPI.repositories.YahooUSRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -17,29 +20,47 @@ import java.util.List;
 @Slf4j
 @EnableScheduling
 public class NewsFeedMapperService {
+    private YahooUSClient yahooUSClient;
     private YahooUKClient yahooUKClient;
-    private NewsfeedMapperRepository newsfeedMapperRepository;
-
+    private YahooUKRepository yahooUKRepository;
+    private YahooUSRepository yahooUSRepository;
     @Autowired
-    public NewsFeedMapperService(NewsfeedMapperRepository newsfeedMapperRepository, YahooUKClient yahooUKClient) {
-        this.newsfeedMapperRepository = newsfeedMapperRepository;
+    public NewsFeedMapperService(YahooUKRepository newsfeedMapperRepository, YahooUKClient yahooUKClient, YahooUSClient yahooUSClient, YahooUSRepository yahooUSRepository) {
+        this.yahooUKRepository = newsfeedMapperRepository;
         this.yahooUKClient=yahooUKClient;
+        this.yahooUSClient=yahooUSClient;
+        this.yahooUSRepository=yahooUSRepository;
     }
 
     @Scheduled(fixedDelay = 300000)
-    public List<YahooUKItem> processYahooUK() throws IOException {
+    public void processYahooUK() throws IOException {
         log.info("YahooUK article mapping has started");
         List<YahooUKItem> yahooUKItemList=yahooUKClient.getRssFeed();
-        YahooUKItem currentItem =yahooUKItemList.get(0);
+        YahooUKItem currentItem = yahooUKItemList.get(0);
         try {
             for(YahooUKItem item:yahooUKItemList){
                 currentItem = item;
-                newsfeedMapperRepository.save(item);
+                yahooUKRepository.save(currentItem);
             }
         }catch(Exception exception){
            log.error("Failed to store yahoo-uk article in database, article: "+currentItem.toString());
            throw new FailedToStoreInDatabase("Failed to store yahoo-uk article in database");
         }
-        return yahooUKItemList;
+    }
+
+    @Scheduled(fixedDelay = 300000)
+    public void processYahooUS() throws IOException {
+        log.info("YahooUS article mapping has started");
+        List<YahooUSItem> yahooUSItemList=yahooUSClient.getRssFeedUS();
+        YahooUSItem currentItem = yahooUSItemList.get(0);
+        try {
+            for(YahooUSItem item:yahooUSItemList){
+                currentItem = (YahooUSItem) item;
+                yahooUSRepository.save(currentItem);
+            }
+        }catch(Exception exception){
+            log.error("Failed to store yahoo-us article in database, article: "+currentItem.toString());
+            throw new FailedToStoreInDatabase("Failed to store yahoo-us article in database");
+        }
     }
 }

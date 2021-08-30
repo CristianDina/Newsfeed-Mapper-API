@@ -2,8 +2,6 @@ package com.internship.pillarglobal.NewsfeedMapperAPI.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.w3c.dom.Text;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,13 +9,11 @@ import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
-@Data
-@Table(name="yahoo_uk_items",schema = "newsfeed_api_db_schema")
 @AllArgsConstructor
 @NoArgsConstructor
-public class YahooUKItem  {
-
-
+@Table(name="yahoo_us_items",schema = "newsfeed_api_db_schema")
+@Data
+public class YahooUSItem {
     private String title;
     private String link;
     private Date pubDate;
@@ -30,4 +26,5 @@ public class YahooUKItem  {
     @Column(length = 5000)
     private String description;
     private String category;
+
 }

@@ -41,4 +41,21 @@ public class NewsfeedMapperController {
             return new ResponseEntity<>(malformedInputException.getMessage(),HttpStatus.NOT_FOUND);
         }
     }
+
+    @PostMapping("/triggerYahooUS")
+    public ResponseEntity<?> triggerYahooUS() throws IOException, InterruptedException {
+        try {
+            newsFeedMapperService.processYahooUS();
+            return new ResponseEntity<String>("Trigger to yahoo-us was done successfully.", HttpStatus.OK);
+        } catch (FailedToStoreInDatabase failedToStoreInDatabase) {
+            return new ResponseEntity<String>(failedToStoreInDatabase.getMessage(), HttpStatus.NOT_FOUND);
+        }
+        catch (FailedToReadDataFromXml failedToReadDataFromXml){
+
+            return new ResponseEntity<String>(failedToReadDataFromXml.getMessage(), HttpStatus.NOT_FOUND);
+        }
+        catch (MalformedInputException malformedInputException){
+            return new ResponseEntity<>(malformedInputException.getMessage(),HttpStatus.NOT_FOUND);
+        }
+    }
 }
