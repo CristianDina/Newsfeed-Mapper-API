@@ -27,6 +27,6 @@ public class MsnUKItem {
 
     private String description;
     @JacksonXmlProperty(localName = "media_content")
-    //@JacksonXmlElementWrapper(localName = "media_content", useWrapping = false)
+    @JacksonXmlElementWrapper(localName = "media_content", useWrapping = false)
     private Content media_content;
 }

@@ -120,7 +120,6 @@ public class ItemMapper {
         while (lastIndex <= data.length() - 6) {
             XmlMapper xmlMapper = new XmlMapper();
             xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
-            //Eroare
             MsnUKItem value
                     = xmlMapper.readValue(itemAsXml, MsnUKItem.class);
             log.info(String.valueOf(value));
@@ -138,8 +137,23 @@ public class ItemMapper {
     }
 
     public static MsnUKItemForDB getMsnDB(MsnUKItem item) {
-        Content content=item.getMedia_content();
-        //String contetSeralize=content.ser
-        return new MsnUKItemForDB(item.getTitle(), item.getLink(), item.getGuid(), item.getPubDate(), item.getDc_creator(), item.getDc_abstract(), item.getDc_publisher(), item.getDc_modified(), item.isDc_premium(), item.getDescription(), item.getMedia_content().toString());
+        return new MsnUKItemForDB(item.getTitle(),
+                item.getLink(),
+                item.getGuid(),
+                item.getPubDate(),
+                item.getDc_creator(),
+                item.getDc_abstract(),
+                item.getDc_publisher(),
+                item.getDc_modified(),
+                item.isDc_premium(),
+                item.getDescription(),
+                item.getMedia_content().getUrl(),
+                item.getMedia_content().getType(),
+                item.getMedia_content().getMedia_thumbnail().getUrl(),
+                item.getMedia_content().getMedia_thumbnail().getType(),
+                item.getMedia_content().getMedia_credit(),
+                item.getMedia_content().getMedia_title(),
+                item.getMedia_content().getMedia_text(),
+                item.getMedia_content().getMi_hasSyndicationRights());
     }
 }

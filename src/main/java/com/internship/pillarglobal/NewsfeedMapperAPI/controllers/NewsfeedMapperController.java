@@ -31,14 +31,14 @@ public class NewsfeedMapperController {
             newsFeedMapperService.processYahooUK();
             return new ResponseEntity<String>("Trigger to yahoo-uk was done successfully.", HttpStatus.OK);
         } catch (FailedToStoreInDatabase failedToStoreInDatabase) {
-            return new ResponseEntity<String>(failedToStoreInDatabase.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<String>(failedToStoreInDatabase.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         catch (FailedToReadDataFromXml failedToReadDataFromXml){
 
-            return new ResponseEntity<String>(failedToReadDataFromXml.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<String>(failedToReadDataFromXml.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         catch (MalformedInputException malformedInputException){
-            return new ResponseEntity<>(malformedInputException.getMessage(),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(malformedInputException.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -48,14 +48,14 @@ public class NewsfeedMapperController {
             newsFeedMapperService.processYahooUS();
             return new ResponseEntity<String>("Trigger to yahoo-us was done successfully.", HttpStatus.OK);
         } catch (FailedToStoreInDatabase failedToStoreInDatabase) {
-            return new ResponseEntity<String>(failedToStoreInDatabase.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<String>(failedToStoreInDatabase.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         catch (FailedToReadDataFromXml failedToReadDataFromXml){
 
-            return new ResponseEntity<String>(failedToReadDataFromXml.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<String>(failedToReadDataFromXml.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         catch (MalformedInputException malformedInputException){
-            return new ResponseEntity<>(malformedInputException.getMessage(),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(malformedInputException.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -65,14 +65,14 @@ public class NewsfeedMapperController {
             newsFeedMapperService.processMsnUK();
             return new ResponseEntity<String>("Trigger to msn-uk was done successfully.", HttpStatus.OK);
         } catch (FailedToStoreInDatabase failedToStoreInDatabase) {
-            return new ResponseEntity<String>(failedToStoreInDatabase.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<String>(failedToStoreInDatabase.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         catch (FailedToReadDataFromXml failedToReadDataFromXml){
 
-            return new ResponseEntity<String>(failedToReadDataFromXml.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<String>(failedToReadDataFromXml.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         catch (MalformedInputException malformedInputException){
-            return new ResponseEntity<>(malformedInputException.getMessage(),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(malformedInputException.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

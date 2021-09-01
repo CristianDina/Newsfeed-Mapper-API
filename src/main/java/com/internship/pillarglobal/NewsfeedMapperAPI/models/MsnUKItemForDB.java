@@ -1,5 +1,6 @@
 package com.internship.pillarglobal.NewsfeedMapperAPI.models;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -7,9 +8,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity
+
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Table(name="msn_uk_items",schema = "newsfeed_api_db_schema")
 public class MsnUKItemForDB {
 
@@ -25,5 +27,13 @@ public class MsnUKItemForDB {
     private boolean dc_premium;
     @Column(length = 100000)
     private String description;
-    private String media_content;
+    private String media_content_url;
+    private String media_content_type;
+    private String media_thumbnail_url;
+    private String getMedia_thumbnail_type;
+    private String media_credit;
+    private String media_title;
+    private String media_text;
+    private int mi_hasSyndicationRights;
+
 }
