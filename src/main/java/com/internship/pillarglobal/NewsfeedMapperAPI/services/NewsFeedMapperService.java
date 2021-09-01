@@ -1,14 +1,13 @@
 package com.internship.pillarglobal.NewsfeedMapperAPI.services;
 
 import com.internship.pillarglobal.NewsfeedMapperAPI.clients.MsnUKClient;
+import com.internship.pillarglobal.NewsfeedMapperAPI.clients.MsnUSClient;
 import com.internship.pillarglobal.NewsfeedMapperAPI.clients.YahooUKClient;
 import com.internship.pillarglobal.NewsfeedMapperAPI.clients.YahooUSClient;
 import com.internship.pillarglobal.NewsfeedMapperAPI.exceptions.FailedToStoreInDatabase;
-import com.internship.pillarglobal.NewsfeedMapperAPI.models.MsnUKItem;
-import com.internship.pillarglobal.NewsfeedMapperAPI.models.MsnUKItemForDB;
-import com.internship.pillarglobal.NewsfeedMapperAPI.models.YahooUKItem;
-import com.internship.pillarglobal.NewsfeedMapperAPI.models.YahooUSItem;
+import com.internship.pillarglobal.NewsfeedMapperAPI.models.*;
 import com.internship.pillarglobal.NewsfeedMapperAPI.repositories.MsnUKRepository;
+import com.internship.pillarglobal.NewsfeedMapperAPI.repositories.MsnUSRepository;
 import com.internship.pillarglobal.NewsfeedMapperAPI.repositories.YahooUKRepository;
 import com.internship.pillarglobal.NewsfeedMapperAPI.repositories.YahooUSRepository;
 import com.internship.pillarglobal.NewsfeedMapperAPI.utils.ItemMapper;
@@ -32,15 +31,18 @@ public class NewsFeedMapperService {
     private YahooUSRepository yahooUSRepository;
     private MsnUKClient msnUKClient;
     private MsnUKRepository msnUKRepository;
-
+    private MsnUSClient msnUSClient;
+    private MsnUSRepository msnUSRepository;
     @Autowired
-    public NewsFeedMapperService(YahooUKRepository newsfeedMapperRepository, YahooUKClient yahooUKClient, YahooUSClient yahooUSClient, YahooUSRepository yahooUSRepository, MsnUKClient msnUKClient, MsnUKRepository msnUKRepository) {
+    public NewsFeedMapperService(YahooUKRepository newsfeedMapperRepository, YahooUKClient yahooUKClient, YahooUSClient yahooUSClient, YahooUSRepository yahooUSRepository, MsnUKClient msnUKClient, MsnUKRepository msnUKRepository, MsnUSClient msnUSClient, MsnUSRepository msnUSRepository) {
         this.yahooUKRepository = newsfeedMapperRepository;
         this.yahooUKClient = yahooUKClient;
         this.yahooUSClient = yahooUSClient;
         this.yahooUSRepository = yahooUSRepository;
         this.msnUKClient = msnUKClient;
         this.msnUKRepository = msnUKRepository;
+        this.msnUSClient=msnUSClient;
+        this.msnUSRepository=msnUSRepository;
     }
 
     @Scheduled(fixedDelay = 300000)
@@ -86,6 +88,21 @@ public class NewsFeedMapperService {
             } catch (Exception exception) {
                 log.error("Failed to store msn-uk article in database, article: " + item.toString());
                 throw new FailedToStoreInDatabase("Failed to store msn-uk article in database" + item.toString());
+            }
+        }
+    }
+
+    @Scheduled(fixedDelay = 300000)
+    public void processMsnUS() throws IOException {
+        log.info("MsnUS article mapping has started");
+        List<MsnUSItem> msnUSItems = msnUSClient.getRssFeed();
+        for (MsnUSItem item : msnUSItems) {
+            MsnUSItemForDB msnUSItemForDB=ItemMapper.getMsnDBUS(item);
+            try {
+                msnUSRepository.save(msnUSItemForDB);
+            } catch (Exception exception) {
+                log.error("Failed to store msn-us article in database, article: " + item.toString());
+                throw new FailedToStoreInDatabase("Failed to store msn-us article in database" + item.toString());
             }
         }
     }

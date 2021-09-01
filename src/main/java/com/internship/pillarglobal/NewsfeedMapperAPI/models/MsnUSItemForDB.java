@@ -1,17 +1,20 @@
 package com.internship.pillarglobal.NewsfeedMapperAPI.models;
+
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
-
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="msn_uk_items",schema = "newsfeed_api_db_schema")
-public class MsnUKItemForDB {
-
+@Table(name="msn_us_items",schema = "newsfeed_api_db_schema")
+public class MsnUSItemForDB {
     private String title;
     private String link;
     @Id

@@ -3,7 +3,7 @@ package com.internship.pillarglobal.NewsfeedMapperAPI.clients;
 import com.internship.pillarglobal.NewsfeedMapperAPI.exceptions.FailedToReadDataFromXml;
 import com.internship.pillarglobal.NewsfeedMapperAPI.exceptions.MalformedUrlWhenXmlisRead;
 import com.internship.pillarglobal.NewsfeedMapperAPI.models.MsnUKItem;
-import com.internship.pillarglobal.NewsfeedMapperAPI.models.YahooUKItem;
+import com.internship.pillarglobal.NewsfeedMapperAPI.models.MsnUSItem;
 import com.internship.pillarglobal.NewsfeedMapperAPI.utils.ItemMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -18,11 +18,11 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class MsnUKClient {
-    public List<MsnUKItem> getRssFeed() throws IOException {
+public class MsnUSClient {
+    public List<MsnUSItem> getRssFeed() throws IOException {
         URL msn=null;
         try {
-            msn = new URL("https://msn-backend.platforms-prod-gcp.telegraph.co.uk/rss.xml");
+            msn = new URL("https://msn-us-backend.platforms-prod-gcp.telegraph.co.uk/rss.xml");
             URLConnection yc = msn.openConnection();
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(
@@ -32,14 +32,14 @@ public class MsnUKClient {
             while ((inputLine = in.readLine()) != null)
                 data = data.concat(inputLine);
             in.close();
-            return ItemMapper.getItemsListMsnUK(data);
+            return ItemMapper.getItemsListMsnUS(data);
         }catch (MalformedURLException malformedURLException){
-            log.error("An malformed URL has occurred at msn-uk client: "+msn.getPath());
-            throw new MalformedUrlWhenXmlisRead("An malformed URL has occurred at msn-uk client: "+msn.getPath());
+            log.error("An malformed URL has occurred at msn-us client: "+msn.getPath());
+            throw new MalformedUrlWhenXmlisRead("An malformed URL has occurred at msn-us client: "+msn.getPath());
         }
         catch (IOException ioException){
-            log.error("Failed to read data from msn-uk xml.");
-            throw new FailedToReadDataFromXml("Failed to read data from msn-uk xml.");
+            log.error("Failed to read data from msn-us xml.");
+            throw new FailedToReadDataFromXml("Failed to read data from msn-us xml.");
         }
     }
 }
