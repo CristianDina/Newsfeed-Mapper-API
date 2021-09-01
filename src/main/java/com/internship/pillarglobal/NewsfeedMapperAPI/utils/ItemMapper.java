@@ -1,7 +1,9 @@
 package com.internship.pillarglobal.NewsfeedMapperAPI.utils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.internship.pillarglobal.NewsfeedMapperAPI.models.YahooUKItem;
-import com.internship.pillarglobal.NewsfeedMapperAPI.models.YahooUSItem;
+import com.internship.pillarglobal.NewsfeedMapperAPI.clients.MsnUKClient;
+import com.internship.pillarglobal.NewsfeedMapperAPI.models.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -40,7 +42,7 @@ public class ItemMapper {
 
         return itemsList;
     }
-    public static List<YahooUSItem> getItemsListYS(String data) throws IOException {
+    public static List<YahooUSItem> getItemsListUS(String data) throws IOException {
         //log.info(String.valueOf(data.indexOf("<item>")));
         int beginIndex = data.indexOf("<item>");
         int endIndex = data.indexOf("</channel></rss>");
@@ -69,5 +71,75 @@ public class ItemMapper {
         }
 
         return itemsList;
+    }
+
+    public static List getItemsListMsnUK(String data) throws IOException {
+        int beginIndex = data.indexOf("<item>");
+        int endIndex = data.indexOf("</channel></rss>");
+        data = data.substring(beginIndex, endIndex);
+        data = data.replaceAll("<dc:creator>", "<dc_creator>");
+        data = data.replaceAll("</dc:creator>", "</dc_creator>");
+
+        data = data.replaceAll("<dc:abstract>", "<dc_abstract>");
+        data = data.replaceAll("</dc:abstract>", "</dc_abstract>");
+
+        data = data.replaceAll("<dc:publisher>", "<dc_publisher>");
+        data = data.replaceAll("</dc:publisher>", "</dc_publisher>");
+
+        data = data.replaceAll("<dc:modified>", "<dc_modified>");
+        data = data.replaceAll("</dc:modified>", "</dc_modified>");
+
+        data = data.replaceAll("<dc:premium>", "<dc_premium>");
+        data = data.replaceAll("</dc:premium>", "</dc_premium>");
+
+        data = data.replaceAll("<media:content", "<media_content");
+        data = data.replaceAll("</media:content>", "</media_content>");
+
+        data = data.replaceAll("<media:thumbnail", "<media_thumbnail");
+        data = data.replaceAll("/>", "></media_thumbnail>");
+
+        data = data.replaceAll("<media:credit>", "<media_credit>");
+        data = data.replaceAll("</media:credit>", "</media_credit>");
+
+        data = data.replaceAll("<media:text>", "<media_text>");
+        data = data.replaceAll("</media:text>", "</media_text>");
+
+        data = data.replaceAll("<media:title>", "<media_title>");
+        data = data.replaceAll("</media:title>", "</media_title>");
+
+        data = data.replaceAll("<mi:hasSyndicationRights>", "<mi_hasSyndicationRights>");
+        data = data.replaceAll("</mi:hasSyndicationRights>", "</mi_hasSyndicationRights>");
+
+
+
+        log.info(data.substring(0,200));
+        int firstIndex = 0;
+        int lastIndex = data.indexOf("</item>");
+        String itemAsXml = data.substring(firstIndex, lastIndex+7);
+        List<MsnUKItem> itemsList = new ArrayList<MsnUKItem>();
+        while (lastIndex <= data.length() - 6) {
+            XmlMapper xmlMapper = new XmlMapper();
+            xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
+            //Eroare
+            MsnUKItem value
+                    = xmlMapper.readValue(itemAsXml, MsnUKItem.class);
+            log.info(String.valueOf(value));
+            itemsList.add(value);
+            firstIndex = lastIndex + 8;
+            if(firstIndex<data.length()-1) {
+                lastIndex = data.indexOf("</item>", firstIndex);
+                itemAsXml = "";
+                itemAsXml = data.substring(firstIndex, lastIndex+7);
+            }
+            else lastIndex=data.length()+100;
+        }
+
+        return itemsList;
+    }
+
+    public static MsnUKItemForDB getMsnDB(MsnUKItem item) {
+        Content content=item.getMedia_content();
+        //String contetSeralize=content.ser
+        return new MsnUKItemForDB(item.getTitle(), item.getLink(), item.getGuid(), item.getPubDate(), item.getDc_creator(), item.getDc_abstract(), item.getDc_publisher(), item.getDc_modified(), item.isDc_premium(), item.getDescription(), item.getMedia_content().toString());
     }
 }

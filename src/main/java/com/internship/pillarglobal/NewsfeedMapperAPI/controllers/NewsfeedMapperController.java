@@ -58,4 +58,21 @@ public class NewsfeedMapperController {
             return new ResponseEntity<>(malformedInputException.getMessage(),HttpStatus.NOT_FOUND);
         }
     }
+
+    @PostMapping("/triggerMsnUK")
+    public ResponseEntity<?> triggerMsnUK() throws IOException, InterruptedException {
+        try {
+            newsFeedMapperService.processMsnUK();
+            return new ResponseEntity<String>("Trigger to msn-uk was done successfully.", HttpStatus.OK);
+        } catch (FailedToStoreInDatabase failedToStoreInDatabase) {
+            return new ResponseEntity<String>(failedToStoreInDatabase.getMessage(), HttpStatus.NOT_FOUND);
+        }
+        catch (FailedToReadDataFromXml failedToReadDataFromXml){
+
+            return new ResponseEntity<String>(failedToReadDataFromXml.getMessage(), HttpStatus.NOT_FOUND);
+        }
+        catch (MalformedInputException malformedInputException){
+            return new ResponseEntity<>(malformedInputException.getMessage(),HttpStatus.NOT_FOUND);
+        }
+    }
 }
