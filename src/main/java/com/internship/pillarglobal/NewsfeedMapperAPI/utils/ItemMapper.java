@@ -156,4 +156,88 @@ public class ItemMapper {
                 item.getMedia_content().getMedia_text(),
                 item.getMedia_content().getMi_hasSyndicationRights());
     }
+
+    public static List<MsnUSItem> getItemsListMsnUS(String data) throws JsonProcessingException {
+        int beginIndex = data.indexOf("<item>");
+        int endIndex = data.indexOf("</channel></rss>");
+        data = data.substring(beginIndex, endIndex);
+        data = data.replaceAll("<dc:creator>", "<dc_creator>");
+        data = data.replaceAll("</dc:creator>", "</dc_creator>");
+
+        data = data.replaceAll("<dc:abstract>", "<dc_abstract>");
+        data = data.replaceAll("</dc:abstract>", "</dc_abstract>");
+
+        data = data.replaceAll("<dc:publisher>", "<dc_publisher>");
+        data = data.replaceAll("</dc:publisher>", "</dc_publisher>");
+
+        data = data.replaceAll("<dc:modified>", "<dc_modified>");
+        data = data.replaceAll("</dc:modified>", "</dc_modified>");
+
+        data = data.replaceAll("<dc:premium>", "<dc_premium>");
+        data = data.replaceAll("</dc:premium>", "</dc_premium>");
+
+        data = data.replaceAll("<media:content", "<media_content");
+        data = data.replaceAll("</media:content>", "</media_content>");
+
+        data = data.replaceAll("<media:thumbnail", "<media_thumbnail");
+        data = data.replaceAll("/>", "></media_thumbnail>");
+
+        data = data.replaceAll("<media:credit>", "<media_credit>");
+        data = data.replaceAll("</media:credit>", "</media_credit>");
+
+        data = data.replaceAll("<media:text>", "<media_text>");
+        data = data.replaceAll("</media:text>", "</media_text>");
+
+        data = data.replaceAll("<media:title>", "<media_title>");
+        data = data.replaceAll("</media:title>", "</media_title>");
+
+        data = data.replaceAll("<mi:hasSyndicationRights>", "<mi_hasSyndicationRights>");
+        data = data.replaceAll("</mi:hasSyndicationRights>", "</mi_hasSyndicationRights>");
+
+
+
+        log.info(data.substring(0,200));
+        int firstIndex = 0;
+        int lastIndex = data.indexOf("</item>");
+        String itemAsXml = data.substring(firstIndex, lastIndex+7);
+        List<MsnUSItem> itemsList = new ArrayList<MsnUSItem>();
+        while (lastIndex <= data.length() - 6) {
+            XmlMapper xmlMapper = new XmlMapper();
+            xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
+            MsnUSItem value
+                    = xmlMapper.readValue(itemAsXml, MsnUSItem.class);
+            log.info(String.valueOf(value));
+            itemsList.add(value);
+            firstIndex = lastIndex + 8;
+            if(firstIndex<data.length()-1) {
+                lastIndex = data.indexOf("</item>", firstIndex);
+                itemAsXml = "";
+                itemAsXml = data.substring(firstIndex, lastIndex+7);
+            }
+            else lastIndex=data.length()+100;
+        }
+
+        return itemsList;
+    }
+
+    public static MsnUSItemForDB getMsnDBUS(MsnUSItem item) {
+        return new MsnUSItemForDB(item.getTitle(),
+                item.getLink(),
+                item.getGuid(),
+                item.getPubDate(),
+                item.getDc_creator(),
+                item.getDc_abstract(),
+                item.getDc_publisher(),
+                item.getDc_modified(),
+                item.isDc_premium(),
+                item.getDescription(),
+                item.getMedia_content().getUrl(),
+                item.getMedia_content().getType(),
+                item.getMedia_content().getMedia_thumbnail().getUrl(),
+                item.getMedia_content().getMedia_thumbnail().getType(),
+                item.getMedia_content().getMedia_credit(),
+                item.getMedia_content().getMedia_title(),
+                item.getMedia_content().getMedia_text(),
+                item.getMedia_content().getMi_hasSyndicationRights());
+    }
 }
