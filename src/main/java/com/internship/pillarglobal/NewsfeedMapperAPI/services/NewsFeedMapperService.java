@@ -1,11 +1,17 @@
 package com.internship.pillarglobal.NewsfeedMapperAPI.services;
+
+import com.internship.pillarglobal.NewsfeedMapperAPI.clients.MsnUKClient;
 import com.internship.pillarglobal.NewsfeedMapperAPI.clients.YahooUKClient;
 import com.internship.pillarglobal.NewsfeedMapperAPI.clients.YahooUSClient;
 import com.internship.pillarglobal.NewsfeedMapperAPI.exceptions.FailedToStoreInDatabase;
+import com.internship.pillarglobal.NewsfeedMapperAPI.models.MsnUKItem;
+import com.internship.pillarglobal.NewsfeedMapperAPI.models.MsnUKItemForDB;
 import com.internship.pillarglobal.NewsfeedMapperAPI.models.YahooUKItem;
 import com.internship.pillarglobal.NewsfeedMapperAPI.models.YahooUSItem;
+import com.internship.pillarglobal.NewsfeedMapperAPI.repositories.MsnUKRepository;
 import com.internship.pillarglobal.NewsfeedMapperAPI.repositories.YahooUKRepository;
 import com.internship.pillarglobal.NewsfeedMapperAPI.repositories.YahooUSRepository;
+import com.internship.pillarglobal.NewsfeedMapperAPI.utils.ItemMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -24,43 +30,64 @@ public class NewsFeedMapperService {
     private YahooUKClient yahooUKClient;
     private YahooUKRepository yahooUKRepository;
     private YahooUSRepository yahooUSRepository;
+    private MsnUKClient msnUKClient;
+    private MsnUKRepository msnUKRepository;
+
     @Autowired
-    public NewsFeedMapperService(YahooUKRepository newsfeedMapperRepository, YahooUKClient yahooUKClient, YahooUSClient yahooUSClient, YahooUSRepository yahooUSRepository) {
+    public NewsFeedMapperService(YahooUKRepository newsfeedMapperRepository, YahooUKClient yahooUKClient, YahooUSClient yahooUSClient, YahooUSRepository yahooUSRepository, MsnUKClient msnUKClient, MsnUKRepository msnUKRepository) {
         this.yahooUKRepository = newsfeedMapperRepository;
-        this.yahooUKClient=yahooUKClient;
-        this.yahooUSClient=yahooUSClient;
-        this.yahooUSRepository=yahooUSRepository;
+        this.yahooUKClient = yahooUKClient;
+        this.yahooUSClient = yahooUSClient;
+        this.yahooUSRepository = yahooUSRepository;
+        this.msnUKClient = msnUKClient;
+        this.msnUKRepository = msnUKRepository;
     }
 
     @Scheduled(fixedDelay = 300000)
     public void processYahooUK() throws IOException {
         log.info("YahooUK article mapping has started");
-        List<YahooUKItem> yahooUKItemList=yahooUKClient.getRssFeed();
+        List<YahooUKItem> yahooUKItemList = yahooUKClient.getRssFeed();
         YahooUKItem currentItem = yahooUKItemList.get(0);
         try {
-            for(YahooUKItem item:yahooUKItemList){
+            for (YahooUKItem item : yahooUKItemList) {
                 currentItem = item;
                 yahooUKRepository.save(currentItem);
             }
-        }catch(Exception exception){
-           log.error("Failed to store yahoo-uk article in database, article: "+currentItem.toString());
-           throw new FailedToStoreInDatabase("Failed to store yahoo-uk article in database");
+        } catch (Exception exception) {
+            log.error("Failed to store yahoo-uk article in database, article: " + currentItem.toString());
+            throw new FailedToStoreInDatabase("Failed to store yahoo-uk article in database");
         }
     }
 
     @Scheduled(fixedDelay = 300000)
     public void processYahooUS() throws IOException {
         log.info("YahooUS article mapping has started");
-        List<YahooUSItem> yahooUSItemList=yahooUSClient.getRssFeedUS();
+        List<YahooUSItem> yahooUSItemList = yahooUSClient.getRssFeedUS();
         YahooUSItem currentItem = yahooUSItemList.get(0);
         try {
-            for(YahooUSItem item:yahooUSItemList){
+            for (YahooUSItem item : yahooUSItemList) {
                 currentItem = (YahooUSItem) item;
                 yahooUSRepository.save(currentItem);
             }
-        }catch(Exception exception){
-            log.error("Failed to store yahoo-us article in database, article: "+currentItem.toString());
+        } catch (Exception exception) {
+            log.error("Failed to store yahoo-us article in database, article: " + currentItem.toString());
             throw new FailedToStoreInDatabase("Failed to store yahoo-us article in database");
         }
     }
+
+    @Scheduled(fixedDelay = 300000)
+    public void processMsnUK() throws IOException {
+        log.info("MsnUK article mapping has started");
+        List<MsnUKItem> msnUKItems = msnUKClient.getRssFeed();
+        for (MsnUKItem item : msnUKItems) {
+            MsnUKItemForDB msnUKItemForDB=ItemMapper.getMsnDB(item);
+            try {
+                msnUKRepository.save(msnUKItemForDB);
+            } catch (Exception exception) {
+                log.error("Failed to store msn-uk article in database, article: " + item.toString());
+                throw new FailedToStoreInDatabase("Failed to store msn-uk article in database" + item.toString());
+            }
+        }
+    }
 }
+
