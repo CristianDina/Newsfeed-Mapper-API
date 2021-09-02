@@ -2,9 +2,11 @@ package com.internship.pillarglobal.NewsfeedMapperAPI.clients;
 
 import com.internship.pillarglobal.NewsfeedMapperAPI.exceptions.FailedToReadDataFromXml;
 import com.internship.pillarglobal.NewsfeedMapperAPI.exceptions.MalformedUrlWhenXmlisRead;
+import com.internship.pillarglobal.NewsfeedMapperAPI.models.Item;
 import com.internship.pillarglobal.NewsfeedMapperAPI.models.YahooUKItem;
 import com.internship.pillarglobal.NewsfeedMapperAPI.models.YahooUSItem;
 import com.internship.pillarglobal.NewsfeedMapperAPI.utils.ItemMapper;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -17,28 +19,15 @@ import java.net.URLConnection;
 import java.util.List;
 @Slf4j
 @Component
-public class YahooUSClient {
-    public List<YahooUSItem> getRssFeedUS() throws IOException {
-        URL yahoo=null;
-        try {
-            yahoo = new URL("https://yahoo-us-backend.platforms-prod-gcp.telegraph.co.uk/rss.xml");
-            URLConnection yc = yahoo.openConnection();
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(
-                            yc.getInputStream()));
-            String inputLine;
-            String data = "";
-            while ((inputLine = in.readLine()) != null)
-                data = data.concat(inputLine);
-            in.close();
-            return ItemMapper.getItemsListUS(data);
-        }catch (MalformedURLException malformedURLException){
-            log.error("An malformed URL has occurred at yahoo-us client: "+yahoo.getPath());
-            throw new MalformedUrlWhenXmlisRead("An malformed URL has occurred at yahoo-us client: "+yahoo.getPath());
-        }
-        catch (IOException ioException){
-            log.error("Failed to read data from yahoo-us xml.");
-            throw new FailedToReadDataFromXml("Failed to read data from yahoo-us xml.");
-        }
+@NoArgsConstructor
+public class YahooUSClient extends NewsFeedMapperClient{
+
+    public YahooUSClient(String urlString, String clientName) {
+        super(urlString, clientName);
+    }
+
+    @Override
+    protected List<? extends Item> getItemsList(String data) throws IOException {
+        return ItemMapper.getList(data,new YahooUSItem());
     }
 }

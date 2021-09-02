@@ -25,30 +25,30 @@ import java.util.List;
 @Slf4j
 @EnableScheduling
 public class NewsFeedMapperService {
-    private YahooUSClient yahooUSClient;
-    private YahooUKClient yahooUKClient;
+   // private YahooUSClient yahooUSClient;
+   // private YahooUKClient yahooUKClient;
     private YahooUKRepository yahooUKRepository;
     private YahooUSRepository yahooUSRepository;
-    private MsnUKClient msnUKClient;
+   // private MsnUKClient msnUKClient;
     private MsnUKRepository msnUKRepository;
-    private MsnUSClient msnUSClient;
+   // private MsnUSClient msnUSClient;
     private MsnUSRepository msnUSRepository;
     @Autowired
     public NewsFeedMapperService(YahooUKRepository newsfeedMapperRepository, YahooUKClient yahooUKClient, YahooUSClient yahooUSClient, YahooUSRepository yahooUSRepository, MsnUKClient msnUKClient, MsnUKRepository msnUKRepository, MsnUSClient msnUSClient, MsnUSRepository msnUSRepository) {
         this.yahooUKRepository = newsfeedMapperRepository;
-        this.yahooUKClient = yahooUKClient;
-        this.yahooUSClient = yahooUSClient;
+
         this.yahooUSRepository = yahooUSRepository;
-        this.msnUKClient = msnUKClient;
+
         this.msnUKRepository = msnUKRepository;
-        this.msnUSClient=msnUSClient;
+
         this.msnUSRepository=msnUSRepository;
     }
 
     @Scheduled(fixedDelay = 300000)
     public void processYahooUK() throws IOException {
         log.info("YahooUK article mapping has started");
-        List<YahooUKItem> yahooUKItemList = yahooUKClient.getRssFeed();
+        YahooUKClient yahooUKClient=new YahooUKClient("https://yahoo-uk-feed.platforms-prod-gcp.telegraph.co.uk/feed.xml","yahoo-uk");
+        List<YahooUKItem> yahooUKItemList = (List<YahooUKItem>) yahooUKClient.getRssFeed();
         YahooUKItem currentItem = yahooUKItemList.get(0);
         try {
             for (YahooUKItem item : yahooUKItemList) {
@@ -64,7 +64,8 @@ public class NewsFeedMapperService {
     @Scheduled(fixedDelay = 300000)
     public void processYahooUS() throws IOException {
         log.info("YahooUS article mapping has started");
-        List<YahooUSItem> yahooUSItemList = yahooUSClient.getRssFeedUS();
+        YahooUSClient yahooUSClient=new YahooUSClient("https://yahoo-us-backend.platforms-prod-gcp.telegraph.co.uk/rss.xml","yahoo-us");
+        List<YahooUSItem> yahooUSItemList = (List<YahooUSItem>) yahooUSClient.getRssFeed();
         YahooUSItem currentItem = yahooUSItemList.get(0);
         try {
             for (YahooUSItem item : yahooUSItemList) {
@@ -80,7 +81,8 @@ public class NewsFeedMapperService {
     @Scheduled(fixedDelay = 300000)
     public void processMsnUK() throws IOException {
         log.info("MsnUK article mapping has started");
-        List<MsnUKItem> msnUKItems = msnUKClient.getRssFeed();
+        MsnUKClient msnUKClient=new MsnUKClient("https://msn-backend.platforms-prod-gcp.telegraph.co.uk/rss.xml","msn-uk");
+        List<MsnUKItem> msnUKItems = (List<MsnUKItem>) msnUKClient.getRssFeed();
         for (MsnUKItem item : msnUKItems) {
             MsnUKItemForDB msnUKItemForDB=ItemMapper.getMsnDB(item);
             try {
@@ -95,7 +97,8 @@ public class NewsFeedMapperService {
     @Scheduled(fixedDelay = 300000)
     public void processMsnUS() throws IOException {
         log.info("MsnUS article mapping has started");
-        List<MsnUSItem> msnUSItems = msnUSClient.getRssFeed();
+        MsnUSClient msnUSClient=new MsnUSClient("https://msn-us-backend.platforms-prod-gcp.telegraph.co.uk/rss.xml","msn-us");
+        List<MsnUSItem> msnUSItems = (List<MsnUSItem>) msnUSClient.getRssFeed();
         for (MsnUSItem item : msnUSItems) {
             MsnUSItemForDB msnUSItemForDB=ItemMapper.getMsnDBUS(item);
             try {
