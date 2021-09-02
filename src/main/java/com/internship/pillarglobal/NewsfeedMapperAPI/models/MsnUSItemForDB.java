@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name="msn_us_items",schema = "newsfeed_api_db_schema")
-public class MsnUSItemForDB {
+public class MsnUSItemForDB implements MsnItemForDB{
     private String title;
     private String link;
     @Id
