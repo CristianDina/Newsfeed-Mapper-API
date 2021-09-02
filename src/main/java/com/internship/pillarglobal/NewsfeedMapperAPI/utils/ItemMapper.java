@@ -38,48 +38,52 @@ public class ItemMapper {
     }
 
 
-
     public static MsnUKItemForDB getMsnDB(MsnUKItem item) {
-        return new MsnUKItemForDB(item.getTitle(),
-                item.getLink(),
-                item.getGuid(),
-                item.getPubDate(),
-                item.getDc_creator(),
-                item.getDc_abstract(),
-                item.getDc_publisher(),
-                item.getDc_modified(),
-                item.isDc_premium(),
-                item.getDescription(),
-                item.getMedia_content().getUrl(),
-                item.getMedia_content().getType(),
-                item.getMedia_content().getMedia_thumbnail().getUrl(),
-                item.getMedia_content().getMedia_thumbnail().getType(),
-                item.getMedia_content().getMedia_credit(),
-                item.getMedia_content().getMedia_title(),
-                item.getMedia_content().getMedia_text(),
-                item.getMedia_content().getMi_hasSyndicationRights());
+        MsnUKItemForDB msnUKItemForDB = new MsnUKItemForDB();
+
+        msnUKItemForDB.setGuid(item.getGuid());
+        msnUKItemForDB.setPubDate(item.getPubDate());
+        msnUKItemForDB.setDc_creator(item.getDc_creator());
+        msnUKItemForDB.setDc_abstract(item.getDc_abstract());
+        msnUKItemForDB.setDc_publisher(item.getDc_publisher());
+        msnUKItemForDB.setDc_modified(item.getDc_modified());
+        msnUKItemForDB.setDc_premium(item.isDc_premium());
+        msnUKItemForDB.setDescription(item.getDescription());
+        if (item.getMedia_content() != null) {
+            msnUKItemForDB.setMedia_content_url(item.getMedia_content().getUrl());
+            msnUKItemForDB.setMedia_content_type(item.getMedia_content().getType());
+            msnUKItemForDB.setMedia_thumbnail_url(item.getMedia_content().getMedia_thumbnail().getUrl());
+            msnUKItemForDB.setMedia_thumbnail_type(item.getMedia_content().getMedia_thumbnail().getType());
+            msnUKItemForDB.setMedia_credit(item.getMedia_content().getMedia_credit());
+            msnUKItemForDB.setMedia_title(item.getMedia_content().getMedia_title());
+            msnUKItemForDB.setMedia_text(item.getMedia_content().getMedia_text());
+            msnUKItemForDB.setMi_hasSyndicationRights(item.getMedia_content().getMi_hasSyndicationRights());
+        }
+        return msnUKItemForDB;
     }
 
 
-
     public static MsnUSItemForDB getMsnDBUS(MsnUSItem item) {
-        return new MsnUSItemForDB(item.getTitle(),
-                item.getLink(),
-                item.getGuid(),
-                item.getPubDate(),
-                item.getDc_creator(),
-                item.getDc_abstract(),
-                item.getDc_publisher(),
-                item.getDc_modified(),
-                item.isDc_premium(),
-                item.getDescription(),
-                item.getMedia_content().getUrl(),
-                item.getMedia_content().getType(),
-                item.getMedia_content().getMedia_thumbnail().getUrl(),
-                item.getMedia_content().getMedia_thumbnail().getType(),
-                item.getMedia_content().getMedia_credit(),
-                item.getMedia_content().getMedia_title(),
-                item.getMedia_content().getMedia_text(),
-                item.getMedia_content().getMi_hasSyndicationRights());
+        MsnUSItemForDB msnUSItemForDB = new MsnUSItemForDB();
+
+        msnUSItemForDB.setGuid(item.getGuid());
+        msnUSItemForDB.setPubDate(item.getPubDate());
+        msnUSItemForDB.setDc_creator(item.getDc_creator());
+        msnUSItemForDB.setDc_abstract(item.getDc_abstract());
+        msnUSItemForDB.setDc_publisher(item.getDc_publisher());
+        msnUSItemForDB.setDc_modified(item.getDc_modified());
+        msnUSItemForDB.setDc_premium(item.isDc_premium());
+        msnUSItemForDB.setDescription(item.getDescription());
+        if (item.getMedia_content() != null) {
+            msnUSItemForDB.setMedia_content_url(item.getMedia_content().getUrl());
+            msnUSItemForDB.setMedia_content_type(item.getMedia_content().getType());
+            msnUSItemForDB.setMedia_thumbnail_url(item.getMedia_content().getMedia_thumbnail().getUrl());
+            msnUSItemForDB.setMedia_thumbnail_type(item.getMedia_content().getMedia_thumbnail().getType());
+            msnUSItemForDB.setMedia_credit(item.getMedia_content().getMedia_credit());
+            msnUSItemForDB.setMedia_title(item.getMedia_content().getMedia_title());
+            msnUSItemForDB.setMedia_text(item.getMedia_content().getMedia_text());
+            msnUSItemForDB.setMi_hasSyndicationRights(item.getMedia_content().getMi_hasSyndicationRights());
+        }
+        return msnUSItemForDB;
     }
 }

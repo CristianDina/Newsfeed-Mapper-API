@@ -2,6 +2,7 @@ package com.internship.pillarglobal.NewsfeedMapperAPI.models;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -13,6 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Data
 @Table(name="msn_us_items",schema = "newsfeed_api_db_schema")
 public class MsnUSItemForDB implements MsnItemForDB{
     private String title;
@@ -30,7 +32,7 @@ public class MsnUSItemForDB implements MsnItemForDB{
     private String media_content_url;
     private String media_content_type;
     private String media_thumbnail_url;
-    private String getMedia_thumbnail_type;
+    private String media_thumbnail_type;
     private String media_credit;
     @Column(length = 100000)
     private String media_title;
