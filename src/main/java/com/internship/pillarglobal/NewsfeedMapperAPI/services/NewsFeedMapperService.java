@@ -25,29 +25,31 @@ import java.util.List;
 @Slf4j
 @EnableScheduling
 public class NewsFeedMapperService {
-   // private YahooUSClient yahooUSClient;
-   // private YahooUKClient yahooUKClient;
+    private YahooUSClient yahooUSClient;
+    private YahooUKClient yahooUKClient;
     private YahooUKRepository yahooUKRepository;
     private YahooUSRepository yahooUSRepository;
-   // private MsnUKClient msnUKClient;
+    private MsnUKClient msnUKClient;
     private MsnUKRepository msnUKRepository;
-   // private MsnUSClient msnUSClient;
+    private MsnUSClient msnUSClient;
     private MsnUSRepository msnUSRepository;
+
     @Autowired
-    public NewsFeedMapperService(YahooUKRepository newsfeedMapperRepository, YahooUKClient yahooUKClient, YahooUSClient yahooUSClient, YahooUSRepository yahooUSRepository, MsnUKClient msnUKClient, MsnUKRepository msnUKRepository, MsnUSClient msnUSClient, MsnUSRepository msnUSRepository) {
+    public NewsFeedMapperService(YahooUKRepository newsfeedMapperRepository,  YahooUSRepository yahooUSRepository, MsnUKRepository msnUKRepository,  MsnUSRepository msnUSRepository) {
         this.yahooUKRepository = newsfeedMapperRepository;
-
+        this.yahooUKClient = new YahooUKClient("https://yahoo-uk-feed.platforms-prod-gcp.telegraph.co.uk/feed.xml", "yahoo-uk");;
         this.yahooUSRepository = yahooUSRepository;
-
+        this.yahooUSClient = new YahooUSClient("https://yahoo-us-backend.platforms-prod-gcp.telegraph.co.uk/rss.xml", "yahoo-us");
         this.msnUKRepository = msnUKRepository;
+        this.msnUKClient = new MsnUKClient("https://msn-backend.platforms-prod-gcp.telegraph.co.uk/rss.xml", "msn-uk");
+        this.msnUSRepository = msnUSRepository;
+        this.msnUSClient = new MsnUSClient("https://msn-us-backend.platforms-prod-gcp.telegraph.co.uk/rss.xml", "msn-us");
 
-        this.msnUSRepository=msnUSRepository;
     }
 
     @Scheduled(fixedDelay = 300000)
     public void processYahooUK() throws IOException {
         log.info("YahooUK article mapping has started");
-        YahooUKClient yahooUKClient=new YahooUKClient("https://yahoo-uk-feed.platforms-prod-gcp.telegraph.co.uk/feed.xml","yahoo-uk");
         List<YahooUKItem> yahooUKItemList = (List<YahooUKItem>) yahooUKClient.getRssFeed();
         YahooUKItem currentItem = yahooUKItemList.get(0);
         try {
@@ -64,7 +66,6 @@ public class NewsFeedMapperService {
     @Scheduled(fixedDelay = 300000)
     public void processYahooUS() throws IOException {
         log.info("YahooUS article mapping has started");
-        YahooUSClient yahooUSClient=new YahooUSClient("https://yahoo-us-backend.platforms-prod-gcp.telegraph.co.uk/rss.xml","yahoo-us");
         List<YahooUSItem> yahooUSItemList = (List<YahooUSItem>) yahooUSClient.getRssFeed();
         YahooUSItem currentItem = yahooUSItemList.get(0);
         try {
@@ -81,10 +82,9 @@ public class NewsFeedMapperService {
     @Scheduled(fixedDelay = 300000)
     public void processMsnUK() throws IOException {
         log.info("MsnUK article mapping has started");
-        MsnUKClient msnUKClient=new MsnUKClient("https://msn-backend.platforms-prod-gcp.telegraph.co.uk/rss.xml","msn-uk");
         List<MsnUKItem> msnUKItems = (List<MsnUKItem>) msnUKClient.getRssFeed();
         for (MsnUKItem item : msnUKItems) {
-            MsnUKItemForDB msnUKItemForDB=ItemMapper.getMsnDB(item);
+            MsnUKItemForDB msnUKItemForDB = ItemMapper.getMsnDB(item);
             try {
                 msnUKRepository.save(msnUKItemForDB);
             } catch (Exception exception) {
@@ -97,10 +97,9 @@ public class NewsFeedMapperService {
     @Scheduled(fixedDelay = 300000)
     public void processMsnUS() throws IOException {
         log.info("MsnUS article mapping has started");
-        MsnUSClient msnUSClient=new MsnUSClient("https://msn-us-backend.platforms-prod-gcp.telegraph.co.uk/rss.xml","msn-us");
         List<MsnUSItem> msnUSItems = (List<MsnUSItem>) msnUSClient.getRssFeed();
         for (MsnUSItem item : msnUSItems) {
-            MsnUSItemForDB msnUSItemForDB=ItemMapper.getMsnDBUS(item);
+            MsnUSItemForDB msnUSItemForDB = ItemMapper.getMsnDBUS(item);
             try {
                 msnUSRepository.save(msnUSItemForDB);
             } catch (Exception exception) {
