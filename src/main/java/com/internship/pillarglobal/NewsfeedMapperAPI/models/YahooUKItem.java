@@ -15,8 +15,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class YahooUKItem {
-
-
     private String title;
     private String link;
     private Date pubDate;

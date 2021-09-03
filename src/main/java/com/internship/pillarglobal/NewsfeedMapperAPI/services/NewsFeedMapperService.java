@@ -35,55 +35,51 @@ public class NewsFeedMapperService {
     private MsnUSRepository msnUSRepository;
 
     @Autowired
-    public NewsFeedMapperService(YahooUKRepository newsfeedMapperRepository,  YahooUSRepository yahooUSRepository, MsnUKRepository msnUKRepository,  MsnUSRepository msnUSRepository, YahooUKClient yahooUKClient, YahooUSClient yahooUSClient, MsnUKClient msnUKClient, MsnUSClient msnUSClient) {
+    public NewsFeedMapperService(YahooUKRepository newsfeedMapperRepository, YahooUSRepository yahooUSRepository, MsnUKRepository msnUKRepository, MsnUSRepository msnUSRepository, YahooUKClient yahooUKClient, YahooUSClient yahooUSClient, MsnUKClient msnUKClient, MsnUSClient msnUSClient) {
         this.yahooUKRepository = newsfeedMapperRepository;
         this.yahooUSRepository = yahooUSRepository;
         this.msnUKRepository = msnUKRepository;
         this.msnUSRepository = msnUSRepository;
-        this.msnUKClient=msnUKClient;
-        this.msnUSClient=msnUSClient;
-        this.yahooUSClient=yahooUSClient;
-        this.yahooUKClient=yahooUKClient;
+        this.msnUKClient = msnUKClient;
+        this.msnUSClient = msnUSClient;
+        this.yahooUSClient = yahooUSClient;
+        this.yahooUKClient = yahooUKClient;
     }
 
     @Scheduled(fixedDelay = 300000)
     public void processYahooUK() throws IOException {
         log.info("YahooUK article mapping has started");
         List<YahooUKItem> yahooUKItemList = (List<YahooUKItem>) yahooUKClient.getRssFeed();
-        YahooUKItem currentItem = yahooUKItemList.get(0);
-        try {
-            for (YahooUKItem item : yahooUKItemList) {
-                currentItem = item;
-                yahooUKRepository.save(currentItem);
+        for (YahooUKItem item : yahooUKItemList) {
+            try {
+                yahooUKRepository.save(item);
+            } catch (Exception exception) {
+                log.error("Failed to store yahoo-uk article in database, article: " + item.toString());
+                throw new FailedToStoreInDatabase("Failed to store yahoo-uk article in database");
             }
-        } catch (Exception exception) {
-            log.error("Failed to store yahoo-uk article in database, article: " + currentItem.toString());
-            throw new FailedToStoreInDatabase("Failed to store yahoo-uk article in database");
         }
     }
 
     @Scheduled(fixedDelay = 300000)
     public void processYahooUS() throws IOException {
         log.info("YahooUS article mapping has started");
-        List<YahooUSItem> yahooUSItemList = (List<YahooUSItem>) yahooUSClient.getRssFeed();
-        YahooUSItem currentItem = yahooUSItemList.get(0);
-        try {
-            for (YahooUSItem item : yahooUSItemList) {
-                currentItem = (YahooUSItem) item;
-                yahooUSRepository.save(currentItem);
+        List<YahooUSItem> yahooUSItemList = yahooUSClient.getRssFeed();
+        for (YahooUSItem item : yahooUSItemList) {
+            try {
+                yahooUSRepository.save(item);
+            } catch (Exception exception) {
+                log.error("Failed to store yahoo-us article in database, article: " + item.toString());
+                throw new FailedToStoreInDatabase("Failed to store yahoo-us article in database");
             }
-        } catch (Exception exception) {
-            log.error("Failed to store yahoo-us article in database, article: " + currentItem.toString());
-            throw new FailedToStoreInDatabase("Failed to store yahoo-us article in database");
         }
     }
 
     @Scheduled(fixedDelay = 300000)
     public void processMsnUK() throws IOException {
         log.info("MsnUK article mapping has started");
-        List<MsnUKItem> msnUKItems =msnUKClient.getRssFeed();
+        List<MsnUKItem> msnUKItems = msnUKClient.getRssFeed();
         for (MsnUKItem item : msnUKItems) {
-            MsnUKItemForDB msnUKItemForDB = ItemMapper.getMsnDB(item);
+            MsnUKItemForDB msnUKItemForDB = ItemMapper.mapMsnUKItemToDBItem(item);
             try {
                 msnUKRepository.save(msnUKItemForDB);
             } catch (Exception exception) {
@@ -98,7 +94,7 @@ public class NewsFeedMapperService {
         log.info("MsnUS article mapping has started");
         List<MsnUSItem> msnUSItems = (List<MsnUSItem>) msnUSClient.getRssFeed();
         for (MsnUSItem item : msnUSItems) {
-            MsnUSItemForDB msnUSItemForDB = ItemMapper.getMsnDBUS(item);
+            MsnUSItemForDB msnUSItemForDB = ItemMapper.mapMsnUSItemToDBItem(item);
             try {
                 msnUSRepository.save(msnUSItemForDB);
             } catch (Exception exception) {

@@ -14,9 +14,8 @@ import java.util.List;
 @Slf4j
 public class ItemMapper {
 
-    public static MsnUKItemForDB getMsnDB(MsnUKItem item) {
+    public static MsnUKItemForDB mapMsnUKItemToDBItem(MsnUKItem item) {
         MsnUKItemForDB msnUKItemForDB = new MsnUKItemForDB();
-
         msnUKItemForDB.setGuid(item.getGuid());
         msnUKItemForDB.setPubDate(item.getPubDate());
         msnUKItemForDB.setDc_creator(item.getDc_creator());
@@ -39,7 +38,7 @@ public class ItemMapper {
     }
 
 
-    public static MsnUSItemForDB getMsnDBUS(MsnUSItem item) {
+    public static MsnUSItemForDB mapMsnUSItemToDBItem(MsnUSItem item) {
         MsnUSItemForDB msnUSItemForDB = new MsnUSItemForDB();
 
         msnUSItemForDB.setGuid(item.getGuid());
