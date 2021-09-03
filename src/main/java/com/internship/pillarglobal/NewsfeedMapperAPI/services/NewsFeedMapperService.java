@@ -35,16 +35,15 @@ public class NewsFeedMapperService {
     private MsnUSRepository msnUSRepository;
 
     @Autowired
-    public NewsFeedMapperService(YahooUKRepository newsfeedMapperRepository,  YahooUSRepository yahooUSRepository, MsnUKRepository msnUKRepository,  MsnUSRepository msnUSRepository) {
+    public NewsFeedMapperService(YahooUKRepository newsfeedMapperRepository,  YahooUSRepository yahooUSRepository, MsnUKRepository msnUKRepository,  MsnUSRepository msnUSRepository, YahooUKClient yahooUKClient, YahooUSClient yahooUSClient, MsnUKClient msnUKClient, MsnUSClient msnUSClient) {
         this.yahooUKRepository = newsfeedMapperRepository;
-        this.yahooUKClient = new YahooUKClient("https://yahoo-uk-feed.platforms-prod-gcp.telegraph.co.uk/feed.xml", "yahoo-uk");;
         this.yahooUSRepository = yahooUSRepository;
-        this.yahooUSClient = new YahooUSClient("https://yahoo-us-backend.platforms-prod-gcp.telegraph.co.uk/rss.xml", "yahoo-us");
         this.msnUKRepository = msnUKRepository;
-        this.msnUKClient = new MsnUKClient("https://msn-backend.platforms-prod-gcp.telegraph.co.uk/rss.xml", "msn-uk");
         this.msnUSRepository = msnUSRepository;
-        this.msnUSClient = new MsnUSClient("https://msn-us-backend.platforms-prod-gcp.telegraph.co.uk/rss.xml", "msn-us");
-
+        this.msnUKClient=msnUKClient;
+        this.msnUSClient=msnUSClient;
+        this.yahooUSClient=yahooUSClient;
+        this.yahooUKClient=yahooUKClient;
     }
 
     @Scheduled(fixedDelay = 300000)
@@ -82,7 +81,7 @@ public class NewsFeedMapperService {
     @Scheduled(fixedDelay = 300000)
     public void processMsnUK() throws IOException {
         log.info("MsnUK article mapping has started");
-        List<MsnUKItem> msnUKItems = (List<MsnUKItem>) msnUKClient.getRssFeed();
+        List<MsnUKItem> msnUKItems =msnUKClient.getRssFeed();
         for (MsnUKItem item : msnUKItems) {
             MsnUKItemForDB msnUKItemForDB = ItemMapper.getMsnDB(item);
             try {

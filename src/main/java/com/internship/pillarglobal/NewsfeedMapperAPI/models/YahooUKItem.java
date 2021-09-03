@@ -1,10 +1,7 @@
 package com.internship.pillarglobal.NewsfeedMapperAPI.models;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.w3c.dom.Text;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +14,7 @@ import java.util.Date;
 @Table(name="yahoo_uk_items",schema = "newsfeed_api_db_schema")
 @AllArgsConstructor
 @NoArgsConstructor
-public class YahooUKItem  extends YahooItem{
+public class YahooUKItem {
 
 
     private String title;
@@ -33,8 +30,5 @@ public class YahooUKItem  extends YahooItem{
     private String description;
     private String category;
 
-    @Override
-    public Item getValue(String itemAsXml, XmlMapper xmlMapper) throws JsonProcessingException {
-        return xmlMapper.readValue(itemAsXml,YahooUKItem.class);
-    }
+
 }

@@ -12,7 +12,7 @@ import java.util.Date;
 @Entity
 @Table(name="msn_uk_items",schema = "newsfeed_api_db_schema")
 @Data
-public class MsnUKItemForDB implements MsnItemForDB{
+public class MsnUKItemForDB {
 
     private String title;
     private String link;
