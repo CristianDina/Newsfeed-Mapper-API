@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @JacksonXmlRootElement(localName= "media_content")
 public class Content {
     @JacksonXmlProperty(isAttribute = true)
