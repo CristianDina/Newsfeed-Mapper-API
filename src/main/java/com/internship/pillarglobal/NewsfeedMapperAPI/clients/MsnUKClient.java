@@ -20,8 +20,7 @@ import java.util.List;
 @Slf4j
 @NoArgsConstructor
 public class MsnUKClient{
-
-    public  List<MsnUKItem> getRssFeed(){
+    public List<MsnUKItem> getRssFeed(){
         URL url=null;
         try {
             url = new URL("https://msn-backend.platforms-prod-gcp.telegraph.co.uk/rss.xml");
