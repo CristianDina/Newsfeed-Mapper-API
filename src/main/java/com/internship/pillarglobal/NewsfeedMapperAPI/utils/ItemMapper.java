@@ -10,12 +10,15 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 @Slf4j
 public class ItemMapper {
 
     public static MsnUKItemForDB mapMsnUKItemToDBItem(MsnUKItem item) {
         MsnUKItemForDB msnUKItemForDB = new MsnUKItemForDB();
+        msnUKItemForDB.setTitle(item.getTitle());
+        msnUKItemForDB.setLink(item.getLink());
         msnUKItemForDB.setGuid(item.getGuid());
         msnUKItemForDB.setPubDate(item.getPubDate());
         msnUKItemForDB.setDc_creator(item.getDc_creator());
@@ -40,7 +43,8 @@ public class ItemMapper {
 
     public static MsnUSItemForDB mapMsnUSItemToDBItem(MsnUSItem item) {
         MsnUSItemForDB msnUSItemForDB = new MsnUSItemForDB();
-
+        msnUSItemForDB.setTitle(item.getTitle());
+        msnUSItemForDB.setLink(item.getLink());
         msnUSItemForDB.setGuid(item.getGuid());
         msnUSItemForDB.setPubDate(item.getPubDate());
         msnUSItemForDB.setDc_creator(item.getDc_creator());
@@ -118,6 +122,7 @@ public class ItemMapper {
     }
 
     public static List<YahooUKItem> getListYahooUK(String data) throws JsonProcessingException {
+
         data = getItemsXmlAsString(data);
         data = getModifiedYahooData(data);
         int lastIndex = data.indexOf("</item>");
