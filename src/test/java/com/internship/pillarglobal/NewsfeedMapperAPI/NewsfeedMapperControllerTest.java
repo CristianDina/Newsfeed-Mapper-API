@@ -57,6 +57,7 @@ public class NewsfeedMapperControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/triggerYahooUK"))
                 .andExpect(status().isOk());
+        Thread.sleep(1000);
         Mockito.verify(yahooUKClient, Mockito.times(1)).getRssFeed();
         Mockito.verify(yahooUKRepository, Mockito.times(1)).save(provided.get(0));
         Mockito.verify(yahooUKRepository, Mockito.times(1)).save(provided.get(1));
@@ -68,6 +69,7 @@ public class NewsfeedMapperControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/triggerYahooUS"))
                 .andExpect(status().isOk());
+        Thread.sleep(1000);
         Mockito.verify(yahooUSClient, Mockito.times(1)).getRssFeed();
         Mockito.verify(yahooUSRepository, Mockito.times(1)).save(provided.get(0));
         Mockito.verify(yahooUSRepository, Mockito.times(1)).save(provided.get(1));
@@ -81,6 +83,7 @@ public class NewsfeedMapperControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/triggerMsnUK"))
                 .andExpect(status().isOk());
+        Thread.sleep(1000);
         Mockito.verify(msnUKClient, Mockito.times(1)).getRssFeed();
         Mockito.verify(msnUKRepository, Mockito.times(1)).save(ItemMapper.mapMsnUKItemToDBItem(provided.get(0)));
         Mockito.verify(msnUKRepository, Mockito.times(1)).save(ItemMapper.mapMsnUKItemToDBItem(provided.get(1)));
@@ -93,6 +96,7 @@ public class NewsfeedMapperControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/triggerMsnUS"))
                 .andExpect(status().isOk());
+        Thread.sleep(1000);
         Mockito.verify(msnUSClient, Mockito.times(1)).getRssFeed();
         Mockito.verify(msnUSRepository, Mockito.times(1)).save(ItemMapper.mapMsnUSItemToDBItem(provided.get(0)));
         Mockito.verify(msnUSRepository, Mockito.times(1)).save(ItemMapper.mapMsnUSItemToDBItem(provided.get(1)));
