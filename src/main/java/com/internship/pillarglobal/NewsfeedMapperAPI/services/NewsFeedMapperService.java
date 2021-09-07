@@ -46,7 +46,7 @@ public class NewsFeedMapperService {
         this.yahooUKClient = yahooUKClient;
     }
 
-    @Scheduled(fixedDelay = 300000, initialDelay = 300000)
+    @Scheduled(initialDelay = 1000, fixedDelay = 300000)
     public void processYahooUK() {
         log.info("YahooUK article mapping has started");
         List<YahooUKItem> yahooUKItemList =yahooUKClient.getRssFeed();
@@ -60,7 +60,7 @@ public class NewsFeedMapperService {
         }
     }
 
-    @Scheduled(fixedDelay = 300000,initialDelay = 300000)
+    @Scheduled(initialDelay = 1000, fixedDelay = 300000)
     public void processYahooUS(){
         log.info("YahooUS article mapping has started");
         List<YahooUSItem> yahooUSItemList = yahooUSClient.getRssFeed();
@@ -74,7 +74,7 @@ public class NewsFeedMapperService {
         }
     }
 
-    @Scheduled(fixedDelay = 300000, initialDelay = 300000)
+    @Scheduled(initialDelay = 1000, fixedDelay = 300000)
     public void processMsnUK()  {
         log.info("MsnUK article mapping has started");
         List<MsnUKItem> msnUKItems = msnUKClient.getRssFeed();
@@ -89,7 +89,7 @@ public class NewsFeedMapperService {
         }
     }
 
-    @Scheduled(fixedDelay = 300000, initialDelay = 300000)
+    @Scheduled(initialDelay = 1000,fixedDelay = 300000)
     public void processMsnUS(){
         log.info("MsnUS article mapping has started");
         List<MsnUSItem> msnUSItems =  msnUSClient.getRssFeed();
