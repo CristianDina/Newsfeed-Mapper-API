@@ -46,10 +46,10 @@ public class NewsFeedMapperService {
         this.yahooUKClient = yahooUKClient;
     }
 
-    @Scheduled(fixedDelay = 300000)
-    public void processYahooUK() throws IOException {
+    @Scheduled(fixedDelay = 300000, initialDelay = 300000)
+    public void processYahooUK() {
         log.info("YahooUK article mapping has started");
-        List<YahooUKItem> yahooUKItemList = (List<YahooUKItem>) yahooUKClient.getRssFeed();
+        List<YahooUKItem> yahooUKItemList =yahooUKClient.getRssFeed();
         for (YahooUKItem item : yahooUKItemList) {
             try {
                 yahooUKRepository.save(item);
@@ -60,8 +60,8 @@ public class NewsFeedMapperService {
         }
     }
 
-    @Scheduled(fixedDelay = 300000)
-    public void processYahooUS() throws IOException {
+    @Scheduled(fixedDelay = 300000,initialDelay = 300000)
+    public void processYahooUS(){
         log.info("YahooUS article mapping has started");
         List<YahooUSItem> yahooUSItemList = yahooUSClient.getRssFeed();
         for (YahooUSItem item : yahooUSItemList) {
@@ -74,8 +74,8 @@ public class NewsFeedMapperService {
         }
     }
 
-    @Scheduled(fixedDelay = 300000)
-    public void processMsnUK() throws IOException {
+    @Scheduled(fixedDelay = 300000, initialDelay = 300000)
+    public void processMsnUK()  {
         log.info("MsnUK article mapping has started");
         List<MsnUKItem> msnUKItems = msnUKClient.getRssFeed();
         for (MsnUKItem item : msnUKItems) {
@@ -89,10 +89,10 @@ public class NewsFeedMapperService {
         }
     }
 
-    @Scheduled(fixedDelay = 300000)
-    public void processMsnUS() throws IOException {
+    @Scheduled(fixedDelay = 300000, initialDelay = 300000)
+    public void processMsnUS(){
         log.info("MsnUS article mapping has started");
-        List<MsnUSItem> msnUSItems = (List<MsnUSItem>) msnUSClient.getRssFeed();
+        List<MsnUSItem> msnUSItems =  msnUSClient.getRssFeed();
         for (MsnUSItem item : msnUSItems) {
             MsnUSItemForDB msnUSItemForDB = ItemMapper.mapMsnUSItemToDBItem(item);
             try {
