@@ -86,7 +86,7 @@
                     <excludes>
                         <exclude>**/models/**</exclude>
                         <exclude>**/exceptions/**</exclude>
-                        <exclude>**/controllers/**</exclude>
+                       <exclude>**/clients/**</exclude>
                     </excludes>
                 </configuration>
                 <executions>
