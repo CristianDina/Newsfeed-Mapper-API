@@ -1,11 +1,9 @@
 package com.internship.pillarglobal.NewsfeedMapperAPI;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.internship.pillarglobal.NewsfeedMapperAPI.models.*;
 import com.internship.pillarglobal.NewsfeedMapperAPI.utils.ItemMapper;
 import org.junit.jupiter.api.Test;
 
-import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.util.*;
 

@@ -1,16 +1,12 @@
 package com.internship.pillarglobal.NewsfeedMapperAPI.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.internship.pillarglobal.NewsfeedMapperAPI.clients.MsnUKClient;
 import com.internship.pillarglobal.NewsfeedMapperAPI.models.*;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimeZone;
 
 @Slf4j
 public class ItemMapper {
