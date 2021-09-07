@@ -76,7 +76,7 @@ public class NewsfeedMapperControllerTest {
 
     @Test
     public void triggerMsnUK_happy() throws Exception {
-        List<MsnUKItem> provided= Arrays.asList(new MsnUKItem("a","a","a",new Date(),"a","a","a",new Date(),true,"aa",null),new MsnUKItem("b","a","a",new Date(),"a","a","a",new Date(),true,"aa",new Content("s","s","d","s","s",3,new Thumbnail("t","t"))));
+        List<MsnUKItem> provided= Arrays.asList(new MsnUKItem("aaa","a","a",new Date(),"a","a","a",new Date(),true,"aa",null),new MsnUKItem("b","a","a",new Date(),"a","a","a",new Date(),true,"aa",new Content("s","s","d","s","s",3,new Thumbnail("t","t"))));
         Mockito.when(msnUKClient.getRssFeed()).thenReturn(provided);
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/triggerMsnUK"))
@@ -88,7 +88,7 @@ public class NewsfeedMapperControllerTest {
 
     @Test
     public void triggerMsnUS_happy() throws Exception {
-        List<MsnUSItem> provided= Arrays.asList(new MsnUSItem("a","a","a",new Date(),"a","a","a",new Date(),true,"aa",new Content("s","s","d","s","s",3,new Thumbnail("t","t"))),new MsnUSItem("a","a","a",new Date(),"a","a","a",new Date(),true,"aa",new Content("s","s","d","s","s",3,new Thumbnail("t","t"))));
+        List<MsnUSItem> provided= Arrays.asList(new MsnUSItem("abb","a","a",new Date(),"a","a","a",new Date(),true,"aa",new Content("s","s","d","s","s",3,new Thumbnail("t","t"))),new MsnUSItem("a","a","a",new Date(),"a","a","a",new Date(),true,"aa",new Content("s","s","d","s","s",3,new Thumbnail("t","t"))));
         Mockito.when(msnUSClient.getRssFeed()).thenReturn(provided);
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/triggerMsnUS"))
