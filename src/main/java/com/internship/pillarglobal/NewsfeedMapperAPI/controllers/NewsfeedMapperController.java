@@ -76,8 +76,4 @@ public class NewsfeedMapperController {
         }
     }
 
-    @GetMapping("/sayHello")
-    public String sayHello(){
-        return "Hello";
-    }
 }
