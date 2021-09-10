@@ -76,5 +76,10 @@ public class NewsfeedMapperController {
         }
     }
 
+    @GetMapping("/getHello")
+    public String getHello(){
+        return "hello";
+    }
+
 
 }
